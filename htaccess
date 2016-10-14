@@ -1,0 +1,50 @@
+# Copyright (C) 2016  Simone Donadello
+
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
+
+# Redirect non-www to www
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteRule ^(.*)$ http://www\.%{HTTP_HOST}/$1 [R=301]
+
+# If not a directory, redirect and remove the trailing slash
+RewriteCond %{REQUEST_URI} ^/([a-zA-Z]{2}/)?(.*)/$
+RewriteCond %{DOCUMENT_ROOT}/%2 !-d
+RewriteCond %{REQUEST_URI} /$
+RewriteRule ^(.*)/$ $1 [R=301]
+
+# If a directory, redirect and add the trailing slash
+RewriteCond %{REQUEST_URI} ^/([a-zA-Z]{2}/)?(.*)$
+RewriteCond %{DOCUMENT_ROOT}/%2 -d
+RewriteCond %{REQUEST_URI} !/$
+RewriteRule ^(.*)$ $1/ [R=301]
+
+# Redirect index to root
+RewriteRule ^(.*)index(\.php|\.html)?$ $1 [L,R=301]
+
+# Redirect .php and .html requests to an extensionless url
+RewriteCond %{THE_REQUEST} ^GET\ (.*)\.(php|html)([#?][^\ ]*)?\ HTTP
+RewriteRule ^(.*)\.(php|html)$ $1 [R=301]
+
+# Resolve translated pages to root pages
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} ^/([a-zA-Z]{2})(/(.*))?$
+RewriteRule ^([a-zA-Z]{2})(/(.*))?$ $3?lang=$1  [L,QSA]
+
+# Resolve extensionless html url
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1\.html [L]
+
+# Resolve extensionless php url
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1\.php [L]
+
+# Change default 404 error page
+ErrorDocument 404 /404\.html
+
