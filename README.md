@@ -1,12 +1,16 @@
 # Beautiful Apache urls with languages
-Pretty URLs with language GET parameter using .htaccess on Apache servers
+Pretty URLs with language GET parameter using .htaccess on Apache servers.
 
 The `.htaccess` file configures the Apache HTTP server to obtain beautiful and ordered URLs
 with default behaviors for file extension, trailing slash and initial `www`.
 
-It is also useful to manage multi-language pages with virtual language code after the domain,
-with the language code being passed as a GET parameter to the page.
-For a discussion on the argument see https://support.google.com/webmasters/answer/182192
+It is also useful to manage multi-language translated pages,
+with virtual directory-like language code after the domain,
+and with the language code being passed as a GET parameter to the real page.
+
+For a discussion on the argument see [here](https://support.google.com/webmasters/answer/182192).
+
+Usage: rename the `htaccess` file as an hidden file `.htaccess` to the Apache server.
 
 E.g. of redirections:
 ```
